@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			#box{
+				height: 200px;
+				width: 160px;
+				background: #fff;
+				position: absolute;
+				top: 50%;
+				left: 20%;
+				transform: translateY(-50%);
+				border: 4px solid #666;
+				border-radius: 10%;
+			}
+			#box:before{
+				content: '+';
+				display: block;
+				height: 200px;
+				width: 160px;
+				font-size:100px;
+				color: #666;
+				text-align: center;
+				line-height: 200px;
+				position: absolute;
+				z-index: 0;
+			}
+			#box:after{
+				content: '预览:';
+				position: absolute;
+				left: 170px;
+				top:-60px;
+				width: 50px;
+			}
+			#box span{
+				position: absolute;
+				top: -28px;
+			}
+			#box #sc{
+				height: 200px;
+				width: 160px;
+				opacity: 0;
+			}
+			#pic{
+				width: 400px;
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				margin: auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<span>选择文件：</span>
+			<input type="file" id="sc"/>
+		</div>
+		<img id="pic" />
+		<script>
+			var reader = new FileReader();
+			var sc = document.getElementById('sc');
+			var pic = document.getElementById('pic');
+			sc.onchange = function() {
+				var file = this.files[0];
+				console.log('你选中了一个'+file.type.replace('image/','')+'文件');
+				reader.readAsDataURL(file);
+				reader.onloadend = function(e) {
+					pic.setAttribute("src",e.target.result);
+					var img = new Image();
+					img.src = e.target.result;
+					img.onload = function() {
+						console.log(`文件尺寸为：${this.height}x${this.width}`)
+					}
+				}
+			}
+		</script>
+	</body>
+</html>
